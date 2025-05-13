@@ -1,0 +1,29 @@
+class Solution:
+    def solve(self, i, j, ind, m, n, word, board, vis):
+        if ind == len(word):
+            return True
+
+        if i < 0 or j < 0 or i >= m or j >= n or vis[i][j] or board[i][j] != word[ind]:
+            return False
+
+        vis[i][j] = True
+
+        if (self.solve(i - 1, j, ind + 1, m, n, word, board, vis) or
+            self.solve(i + 1, j, ind + 1, m, n, word, board, vis) or
+            self.solve(i, j + 1, ind + 1, m, n, word, board, vis) or
+            self.solve(i, j - 1, ind + 1, m, n, word, board, vis)):
+            return True
+
+        vis[i][j] = False
+        return False
+
+    def exist(self, board, word):
+        m, n = len(board), len(board[0])
+
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == word[0]:
+                    vis = [[False for _ in range(n)] for _ in range(m)]
+                    if self.solve(i, j, 0, m, n, word, board, vis):
+                        return True
+        return False
